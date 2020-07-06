@@ -17,10 +17,9 @@ public class AppController {
     private UnitConverter unitConverter;
 
     @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
-    public Quantity convertUnits(@PathVariable("oldUnit") String  oldUnit, @PathVariable("value") double value,
-                                 @PathVariable("newUnit") String  newUnit) {
-        return unitConverter.convert(new Quantity(value, Units.valueOf(oldUnit.toUpperCase())),
-                                        Units.valueOf(newUnit.toUpperCase()));
+    public Quantity convertUnits(@PathVariable("oldUnit") Units  oldUnit, @PathVariable("value") double value,
+                                 @PathVariable("newUnit") Units  newUnit) {
+        return unitConverter.convert(new Quantity(value, oldUnit), newUnit);
     }
 
 }

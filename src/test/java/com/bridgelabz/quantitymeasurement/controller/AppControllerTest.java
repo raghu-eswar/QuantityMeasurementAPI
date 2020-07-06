@@ -75,9 +75,10 @@ class AppControllerTest {
     @Test
     void givenUnitsAndValues_convertUnits_shouldReturnResponseAsBadRequest() {
         try {
-            mockMvc.perform(get("/quantity-measurements/convert/MILLIMETER_/10/CENTIMETER"))
+            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/MILLIMETER_/10/CENTIMETER"))
                     .andExpect(status()
-                            .isBadRequest());
+                            .isBadRequest()).andReturn();
+            assertEquals("MILLIMETER_ is not a proper unit", result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
