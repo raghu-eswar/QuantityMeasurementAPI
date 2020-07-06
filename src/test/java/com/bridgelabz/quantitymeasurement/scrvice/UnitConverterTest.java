@@ -16,7 +16,7 @@ class UnitConverterTest {
     UnitConverter unitConverter;
 
     @Test
-    void ggivenUnitsAndValues_convertUnits_shouldReturnConvertedQuantiy() {
+    void givenUnitsAndValues_convertUnits_shouldReturnConvertedQuantity() {
         Quantity quantity = unitConverter.convert(new Quantity(10, MILLIMETER), CENTIMETER);
         assertEquals(quantity.getValue(), 1);
         assertEquals(quantity.getUnit(), CENTIMETER);

@@ -42,7 +42,7 @@ class AppControllerTest {
     void givenUnitsAndValues_convertUnits_shouldReturnConvertedQuantity() {
         try {
             when(converter.convert(any(Quantity.class), any())).thenReturn(new Quantity(1, CENTIMETER));
-            MvcResult result = mockMvc.perform(get("/QuantityMeasurement/Convert/MILLIMETER/10/CENTIMETER"))
+            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/MILLIMETER/10/CENTIMETER"))
                     .andExpect(status().isOk()).andReturn();
             Quantity quantity = objectMapper.readValue(result.getResponse().getContentAsString(), Quantity.class);
             assertEquals(quantity.getValue(), 1);

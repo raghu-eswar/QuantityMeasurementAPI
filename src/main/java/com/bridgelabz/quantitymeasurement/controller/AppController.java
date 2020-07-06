@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("QuantityMeasurement")
+@RequestMapping("quantity-measurements")
 public class AppController {
 
     @Autowired
     private UnitConverter unitConverter;
 
-    @GetMapping("Convert/{oldUnit}/{value}/{newUnit}")
+    @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
     public Quantity convertUnits(@PathVariable("oldUnit") String  oldUnit, @PathVariable("value") double value,
                                  @PathVariable("newUnit") String  newUnit) {
         return unitConverter.convert(new Quantity(value, Units.valueOf(oldUnit.toUpperCase())),
