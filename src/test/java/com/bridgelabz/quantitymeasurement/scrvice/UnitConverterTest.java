@@ -38,4 +38,12 @@ class UnitConverterTest {
         }
     }
 
+    @Test
+    void givenVolumeUnitsAndValues_convertUnits_shouldReturnConvertedQuantity() {
+        Quantity resultQuantity = unitConverter.convert(new Quantity(1, CUBIC_FEET), GALLON);
+        Quantity expectedQuantity = new Quantity(7.48052, GALLON);
+        assertEquals(expectedQuantity, resultQuantity);
+    }
+
+
 }
