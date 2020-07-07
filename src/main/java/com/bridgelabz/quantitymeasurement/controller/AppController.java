@@ -21,6 +21,11 @@ public class AppController {
         return unitConverter.getAllUnitTypes();
     }
 
+    @GetMapping(value = {"/{unitType}"})
+    public Units[] getValidUnitsOf(@PathVariable("unitType") String  unitType) {
+        return unitConverter.getValidUnitsOf(unitType);
+    }
+
     @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
     public Quantity convertUnits(@PathVariable("oldUnit") Units  oldUnit, @PathVariable("value") double value,
                                  @PathVariable("newUnit") Units  newUnit) {

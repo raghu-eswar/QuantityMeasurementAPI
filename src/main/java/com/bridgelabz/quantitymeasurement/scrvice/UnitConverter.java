@@ -7,4 +7,6 @@ public interface UnitConverter {
     Quantity convert(Quantity quantity, Units conversionUnit);
 
     String[] getAllUnitTypes();
+
+    Units[] getValidUnitsOf(String unitType);
 }

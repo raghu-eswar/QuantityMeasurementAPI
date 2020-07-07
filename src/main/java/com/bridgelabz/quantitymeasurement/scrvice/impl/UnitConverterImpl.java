@@ -1,6 +1,7 @@
 package com.bridgelabz.quantitymeasurement.scrvice.impl;
 
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
+import com.bridgelabz.quantitymeasurement.exceptions.EnumConversionFailedException;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
@@ -26,6 +27,14 @@ public class UnitConverterImpl implements UnitConverter {
     @Override
     public String[] getAllUnitTypes() {
         return Arrays.stream(Units.values()).map(units -> units.type).distinct().toArray(String[]::new);
+    }
+
+    @Override
+    public Units[] getValidUnitsOf(String unitType) {
+        Units[] validUnits = Arrays.stream(Units.values()).filter(units -> units.type.equals(unitType.toUpperCase())).toArray(Units[]::new);
+        if (validUnits.length == 0)
+            throw new UnitConversionFailedException(unitType+" is not a proper unit", HttpStatus.BAD_REQUEST);
+        return validUnits ;
     }
 
 }

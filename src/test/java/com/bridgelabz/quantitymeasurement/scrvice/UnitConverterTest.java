@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.scrvice;
 
+import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class UnitConverterTest {
     void givenWrongUnitsAndValues_convertUnits_shouldThrowException() {
         try {
             unitConverter.convert(new Quantity(10, FEET), CELSIUS);
-        }catch (UnitConversionFailedException e) {
+        } catch (UnitConversionFailedException e) {
             assertEquals("can not convert FEET to CELSIUS", e.getMessage());
         }
     }
@@ -56,6 +57,21 @@ class UnitConverterTest {
     void givenZeroArguments_getAllUnitTypes_shouldReturnArrayOfValidTypes() {
         String[] allUnitTypes = unitConverter.getAllUnitTypes();
         assertEquals(4, allUnitTypes.length);
+    }
+
+    @Test
+    void givenValidUnitType_getValidUnitsOf_shouldReturnArrayOfValidUnits() {
+        Units[] allUnitTypes = unitConverter.getValidUnitsOf("LENGTH");
+        assertEquals(8, allUnitTypes.length);
+    }
+
+    @Test
+    void givenInValidUnitType_getValidUnitsOf_shouldThrowException() {
+        try {
+            unitConverter.getValidUnitsOf("LENGTH_");
+        }catch (UnitConversionFailedException exception) {
+            assertEquals("LENGTH_ is not a proper unit", exception.getMessage());
+        }
     }
 
 }
