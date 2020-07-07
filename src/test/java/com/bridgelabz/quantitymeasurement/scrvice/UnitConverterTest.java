@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.scrvice;
 
+import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,15 @@ class UnitConverterTest {
         Quantity resultQuantity = unitConverter.convert(new Quantity(10, FAHRENHEIT), CELSIUS);
         Quantity expectedQuantity = new Quantity(-12.2222, CELSIUS);
         assertEquals(expectedQuantity, resultQuantity);
+    }
+
+    @Test
+    void givenWrongUnitsAndValues_convertUnits_shouldThrowException() {
+        try {
+            Quantity resultQuantity = unitConverter.convert(new Quantity(10, FEET), CELSIUS);
+        }catch (UnitConversionFailedException e) {
+            assertEquals("can not convert FEET to CELSIUS", e.getMessage());
+        }
     }
 
 }
