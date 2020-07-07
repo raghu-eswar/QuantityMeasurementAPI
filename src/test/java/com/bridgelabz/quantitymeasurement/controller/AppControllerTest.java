@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.controller;
 
+import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -83,5 +85,19 @@ class AppControllerTest {
             e.printStackTrace();
         }
     }
-    
+
+    @Test
+    void givenInvalidUnitsAndValues_convertUnits_shouldReturnResponseAsBadRequest() {
+        try {
+            when(converter.convert(any(Quantity.class), any()))
+                .thenThrow(new UnitConversionFailedException("can not convert CELSIUS to CENTIMETER", HttpStatus.BAD_REQUEST));
+            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/CELSIUS/10/CENTIMETER"))
+                    .andExpect(status()
+                            .isBadRequest()).andReturn();
+            assertEquals("can not convert CELSIUS to CENTIMETER", result.getResponse().getContentAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
