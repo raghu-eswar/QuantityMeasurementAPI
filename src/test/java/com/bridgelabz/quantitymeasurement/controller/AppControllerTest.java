@@ -100,4 +100,18 @@ class AppControllerTest {
         }
     }
 
+    @Test
+    void givenZeroPathVariables_controller_shouldReturnarrayOfAllUnitTypes() {
+        try {
+            String[] unitTypes = {"LENGTH", "TEMPERATURE", "VOLUME"};
+            when(converter.getAllUnitTypes()).thenReturn(unitTypes);
+            MvcResult result = mockMvc.perform(get("/quantity-measurements"))
+                    .andExpect(status()
+                            .isOk()).andReturn();
+            assertEquals(objectMapper.writeValueAsString(unitTypes), result.getResponse().getContentAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

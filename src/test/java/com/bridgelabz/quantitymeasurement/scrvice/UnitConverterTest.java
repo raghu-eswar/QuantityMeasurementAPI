@@ -52,4 +52,10 @@ class UnitConverterTest {
         assertEquals(expectedQuantity, resultQuantity);
     }
 
+    @Test
+    void givenZeroArguments_getAllUnitTypes_shouldReturnArrayOfValidTypes() {
+        String[] allUnitTypes = unitConverter.getAllUnitTypes();
+        assertEquals(4, allUnitTypes.length);
+    }
+
 }

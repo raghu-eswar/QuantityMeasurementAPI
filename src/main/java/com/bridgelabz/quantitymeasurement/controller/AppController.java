@@ -16,6 +16,11 @@ public class AppController {
     @Autowired
     private UnitConverter unitConverter;
 
+    @GetMapping(value = {"", "/"})
+    public String[] getAllUnitTypes() {
+        return unitConverter.getAllUnitTypes();
+    }
+
     @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
     public Quantity convertUnits(@PathVariable("oldUnit") Units  oldUnit, @PathVariable("value") double value,
                                  @PathVariable("newUnit") Units  newUnit) {

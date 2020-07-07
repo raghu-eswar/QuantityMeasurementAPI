@@ -5,4 +5,6 @@ import com.bridgelabz.quantitymeasurement.model.Quantity;
 
 public interface UnitConverter {
     Quantity convert(Quantity quantity, Units conversionUnit);
+
+    String[] getAllUnitTypes();
 }

@@ -7,6 +7,8 @@ import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class UnitConverterImpl implements UnitConverter {
 
@@ -19,6 +21,11 @@ public class UnitConverterImpl implements UnitConverter {
         quantity.setValue(convertedValue);
         quantity.setUnit(conversionUnit);
         return quantity;
+    }
+
+    @Override
+    public String[] getAllUnitTypes() {
+        return Arrays.stream(Units.values()).map(units -> units.type).distinct().toArray(String[]::new);
     }
 
 }
