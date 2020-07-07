@@ -32,7 +32,7 @@ class UnitConverterTest {
     @Test
     void givenWrongUnitsAndValues_convertUnits_shouldThrowException() {
         try {
-            Quantity resultQuantity = unitConverter.convert(new Quantity(10, FEET), CELSIUS);
+            unitConverter.convert(new Quantity(10, FEET), CELSIUS);
         }catch (UnitConversionFailedException e) {
             assertEquals("can not convert FEET to CELSIUS", e.getMessage());
         }
@@ -45,5 +45,11 @@ class UnitConverterTest {
         assertEquals(expectedQuantity, resultQuantity);
     }
 
+    @Test
+    void givenWeightUnitsAndValues_convertUnits_shouldReturnConvertedQuantity() {
+        Quantity resultQuantity = unitConverter.convert(new Quantity(1, POUND), OUNCE);
+        Quantity expectedQuantity = new Quantity(16, OUNCE);
+        assertEquals(expectedQuantity, resultQuantity);
+    }
 
 }
