@@ -12,11 +12,11 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
-        return new ResponseEntity<>(exception.getCause().getCause().getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(exception.getCause().getCause().getMessage());
     }
 
     @ExceptionHandler(UnitConversionFailedException.class)
     public ResponseEntity<String> handleUnitConversionFailedException(UnitConversionFailedException exception) {
-        return new ResponseEntity<>(exception.getMessage(),exception.httpStatus);
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }
