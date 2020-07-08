@@ -1,7 +1,7 @@
 package com.bridgelabz.quantitymeasurement.exceptions.handlers;
 
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
-import com.bridgelabz.quantitymeasurement.response.Response;
+import com.bridgelabz.quantitymeasurement.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

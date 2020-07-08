@@ -26,7 +26,8 @@ public class SwaggerConfig {
                     .build()
                     .apiInfo(apiInfo())
                     .consumes(Collections.singleton("application/json"))
-                    .produces(Collections.singleton("application/json"));
+                    .produces(Collections.singleton("application/json"))
+                    .protocols(Collections.singleton("http"));
     }
 
     private ApiInfo apiInfo() {
@@ -35,6 +36,8 @@ public class SwaggerConfig {
                 .description("Simple API for measurement conversions")
                 .version("1.0")
                 .contact(contact())
+                .license("Apache 2.0")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();
     }
 

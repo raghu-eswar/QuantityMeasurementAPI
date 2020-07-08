@@ -1,9 +1,14 @@
-package com.bridgelabz.quantitymeasurement.response;
+package com.bridgelabz.quantitymeasurement.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.http.HttpStatus;
 
+@ApiModel(description = "contains response from server",value = "Response")
 public class Response {
+    @ApiModelProperty(name = "value", value = "contains response value from api", example = "Quantity")
     private Object value;
+    @ApiModelProperty(name = "status", value = "Represents response status")
     private HttpStatus status;
 
     public Response(Object value, HttpStatus status) {

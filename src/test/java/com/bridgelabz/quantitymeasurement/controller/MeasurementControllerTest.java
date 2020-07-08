@@ -4,7 +4,7 @@ import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
-import com.bridgelabz.quantitymeasurement.response.Response;
+import com.bridgelabz.quantitymeasurement.dto.Response;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
