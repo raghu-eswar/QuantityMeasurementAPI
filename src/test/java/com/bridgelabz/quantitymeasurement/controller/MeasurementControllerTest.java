@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.controller;
 
+import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
 
+import static com.bridgelabz.quantitymeasurement.enumeration.UnitTypes.*;
 import static com.bridgelabz.quantitymeasurement.enumeration.Units.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -104,7 +106,7 @@ class MeasurementControllerTest {
     @Test
     void givenZeroPathVariables_controller_shouldReturnArrayOfAllUnitTypes() {
         try {
-            String[] unitTypes = {"LENGTH", "TEMPERATURE", "VOLUME"};
+            UnitTypes[] unitTypes = {LENGTH, TEMPERATURE, VOLUME};
             when(converter.getAllUnitTypes()).thenReturn(unitTypes);
             MvcResult result = mockMvc.perform(get("/measurements/"))
                     .andExpect(status()
@@ -116,11 +118,25 @@ class MeasurementControllerTest {
     }
 
     @Test
-    void givenUnitType_controller_shouldReturnArrayOfAllValidUnits() {
+    void givenUnitTypeInUpperCase_controller_shouldReturnArrayOfAllValidUnits() {
         try {
             Units[] expectedUnits = new Units[]{ INCH, FEET, YARD, MILLIMETER, MILE};
-            when(converter.getValidUnitsOf(any(String.class))).thenReturn(expectedUnits);
+            when(converter.getValidUnitsOf(any(UnitTypes.class))).thenReturn(expectedUnits);
             MvcResult result = mockMvc.perform(get("/measurements/LENGTH"))
+                    .andExpect(status()
+                            .isOk()).andReturn();
+            assertEquals(objectMapper.writeValueAsString(expectedUnits), result.getResponse().getContentAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void givenUnitTypeInLowerCase_controller_shouldReturnArrayOfAllValidUnits() {
+        try {
+            Units[] expectedUnits = new Units[]{ INCH, FEET, YARD, MILLIMETER, MILE};
+            when(converter.getValidUnitsOf(any(UnitTypes.class))).thenReturn(expectedUnits);
+            MvcResult result = mockMvc.perform(get("/measurements/length"))
                     .andExpect(status()
                             .isOk()).andReturn();
             assertEquals(objectMapper.writeValueAsString(expectedUnits), result.getResponse().getContentAsString());
@@ -132,12 +148,12 @@ class MeasurementControllerTest {
     @Test
     void givenInvalidUnitType_getValidUnitsOf_shouldReturnResponseAsBadRequest() {
         try {
-            when(converter.getValidUnitsOf(any(String.class)))
-                    .thenThrow(new UnitConversionFailedException("Volume is not a proper unit", HttpStatus.BAD_REQUEST));
-            MvcResult result = mockMvc.perform(get("/measurements/Volume"))
+            when(converter.getValidUnitsOf(any(UnitTypes.class)))
+                    .thenThrow(new UnitConversionFailedException("Volume_ is not a proper unit", HttpStatus.BAD_REQUEST));
+            MvcResult result = mockMvc.perform(get("/measurements/Volume_"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
-            assertEquals("Volume is not a proper unit", result.getResponse().getContentAsString());
+            assertEquals("Volume_ is not a proper unit", result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }

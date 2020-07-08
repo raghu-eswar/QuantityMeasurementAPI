@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.scrvice;
 
+import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.bridgelabz.quantitymeasurement.enumeration.UnitTypes.LENGTH;
 import static com.bridgelabz.quantitymeasurement.enumeration.Units.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -55,23 +57,14 @@ class UnitConverterTest {
 
     @Test
     void givenZeroArguments_getAllUnitTypes_shouldReturnArrayOfValidTypes() {
-        String[] allUnitTypes = unitConverter.getAllUnitTypes();
+        UnitTypes[] allUnitTypes = unitConverter.getAllUnitTypes();
         assertEquals(4, allUnitTypes.length);
     }
 
     @Test
     void givenValidUnitType_getValidUnitsOf_shouldReturnArrayOfValidUnits() {
-        Units[] allUnitTypes = unitConverter.getValidUnitsOf("LENGTH");
+        Units[] allUnitTypes = unitConverter.getValidUnitsOf(LENGTH);
         assertEquals(8, allUnitTypes.length);
-    }
-
-    @Test
-    void givenInValidUnitType_getValidUnitsOf_shouldThrowException() {
-        try {
-            unitConverter.getValidUnitsOf("LENGTH_");
-        }catch (UnitConversionFailedException exception) {
-            assertEquals("LENGTH_ is not a proper unit", exception.getMessage());
-        }
     }
 
 }

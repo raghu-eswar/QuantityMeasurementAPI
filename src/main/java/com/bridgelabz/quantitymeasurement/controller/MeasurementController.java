@@ -1,5 +1,6 @@
 package com.bridgelabz.quantitymeasurement.controller;
 
+import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
@@ -21,13 +22,13 @@ public class MeasurementController {
 
     @ApiOperation(value = "returns array of valid unit types ")
     @GetMapping( "/")
-    public String[] getAllUnitTypes() {
+    public UnitTypes[] getAllUnitTypes() {
         return unitConverter.getAllUnitTypes();
     }
 
     @ApiOperation(value = "returns array of valid units of given type ")
     @GetMapping(value = {"/{unitType}"})
-    public Units[] getValidUnitsOf(@PathVariable("unitType") String  unitType) {
+    public Units[] getValidUnitsOf(@PathVariable("unitType") UnitTypes unitType) {
         return unitConverter.getValidUnitsOf(unitType);
     }
 

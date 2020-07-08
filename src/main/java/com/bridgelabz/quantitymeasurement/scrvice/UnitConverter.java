@@ -1,12 +1,13 @@
 package com.bridgelabz.quantitymeasurement.scrvice;
 
+import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
 import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
 
 public interface UnitConverter {
     Quantity convert(Quantity quantity, Units conversionUnit);
 
-    String[] getAllUnitTypes();
+    UnitTypes[] getAllUnitTypes();
 
-    Units[] getValidUnitsOf(String unitType);
+    Units[] getValidUnitsOf(UnitTypes unitType);
 }
