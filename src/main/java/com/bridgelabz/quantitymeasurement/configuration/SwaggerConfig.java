@@ -21,7 +21,7 @@ public class SwaggerConfig {
     public Docket swaggerConfiguration() {
         return new Docket(DocumentationType.SWAGGER_2)
                     .select()
-                    .paths(PathSelectors.regex("/quantity-measurements.*"))
+                    .paths(PathSelectors.regex("/measurements.*"))
                     .apis(RequestHandlerSelectors.basePackage("com.bridgelabz.quantitymeasurement.controller"))
                     .build()
                     .apiInfo(apiInfo())

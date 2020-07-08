@@ -29,7 +29,8 @@ public class Quantity {
 
     public void setValue(double value) {
         this.value = value;
-        setBaseValue();
+        if (this.unit != null)
+            setBaseValue();
     }
 
     public Units getUnit() {

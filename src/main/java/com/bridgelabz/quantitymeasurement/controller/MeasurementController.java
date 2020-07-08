@@ -5,7 +5,6 @@ import com.bridgelabz.quantitymeasurement.model.Quantity;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,26 +12,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("quantity-measurements")
+@RequestMapping("measurements")
 @Api(value = "Measurement conversion controller")
-public class AppController {
+public class MeasurementController {
 
     @Autowired
     private UnitConverter unitConverter;
 
-    @ApiOperation(value = "Get array of valid unit types ")
-    @GetMapping(value = {"", "/"})
+    @ApiOperation(value = "returns array of valid unit types ")
+    @GetMapping( "/")
     public String[] getAllUnitTypes() {
         return unitConverter.getAllUnitTypes();
     }
 
-    @ApiOperation(value = "Get array of valid units of given type types ")
+    @ApiOperation(value = "returns array of valid units of given type ")
     @GetMapping(value = {"/{unitType}"})
     public Units[] getValidUnitsOf(@PathVariable("unitType") String  unitType) {
         return unitConverter.getValidUnitsOf(unitType);
     }
 
-    @ApiOperation(value = "convert value to given unit ")
+    @ApiOperation(value = "converts value to given unit ", notes = "to convert 10inch to feet example path variables INCH/10/FEET")
     @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
     public Quantity convertUnits(@PathVariable("oldUnit") Units  oldUnit, @PathVariable("value") double value,
                                  @PathVariable("newUnit") Units  newUnit) {

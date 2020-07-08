@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-class AppControllerTest {
+class MeasurementControllerTest {
 
     private MockMvc mockMvc;
     @Autowired
@@ -45,7 +45,7 @@ class AppControllerTest {
     void givenUnitsInUpperCaseAndValues_convertUnits_shouldReturnConvertedQuantity() {
         try {
             when(converter.convert(any(Quantity.class), any())).thenReturn(new Quantity(1, CENTIMETER));
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/MILLIMETER/10/CENTIMETER"))
+            MvcResult result = mockMvc.perform(get("/measurements/convert/MILLIMETER/10/CENTIMETER"))
                     .andExpect(status()
                             .isOk())
                     .andReturn();
@@ -62,7 +62,7 @@ class AppControllerTest {
     void givenUnitsInLowerCaseAndValues_convertUnits_shouldReturnConvertedQuantity() {
         try {
             when(converter.convert(any(Quantity.class), any())).thenReturn(new Quantity(1, CENTIMETER));
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/millimeter/10/centimeter"))
+            MvcResult result = mockMvc.perform(get("/measurements/convert/millimeter/10/centimeter"))
                     .andExpect(status()
                             .isOk())
                     .andReturn();
@@ -78,7 +78,7 @@ class AppControllerTest {
     @Test
     void givenUnitsAndValues_convertUnits_shouldReturnResponseAsBadRequest() {
         try {
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/MILLIMETER_/10/CENTIMETER"))
+            MvcResult result = mockMvc.perform(get("/measurements/convert/MILLIMETER_/10/CENTIMETER"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
             assertEquals("MILLIMETER_ is not a proper unit", result.getResponse().getContentAsString());
@@ -92,7 +92,7 @@ class AppControllerTest {
         try {
             when(converter.convert(any(Quantity.class), any()))
                 .thenThrow(new UnitConversionFailedException("can not convert CELSIUS to CENTIMETER", HttpStatus.BAD_REQUEST));
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/convert/CELSIUS/10/CENTIMETER"))
+            MvcResult result = mockMvc.perform(get("/measurements/convert/CELSIUS/10/CENTIMETER"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
             assertEquals("can not convert CELSIUS to CENTIMETER", result.getResponse().getContentAsString());
@@ -106,7 +106,7 @@ class AppControllerTest {
         try {
             String[] unitTypes = {"LENGTH", "TEMPERATURE", "VOLUME"};
             when(converter.getAllUnitTypes()).thenReturn(unitTypes);
-            MvcResult result = mockMvc.perform(get("/quantity-measurements"))
+            MvcResult result = mockMvc.perform(get("/measurements/"))
                     .andExpect(status()
                             .isOk()).andReturn();
             assertEquals(objectMapper.writeValueAsString(unitTypes), result.getResponse().getContentAsString());
@@ -120,7 +120,7 @@ class AppControllerTest {
         try {
             Units[] expectedUnits = new Units[]{ INCH, FEET, YARD, MILLIMETER, MILE};
             when(converter.getValidUnitsOf(any(String.class))).thenReturn(expectedUnits);
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/LENGTH"))
+            MvcResult result = mockMvc.perform(get("/measurements/LENGTH"))
                     .andExpect(status()
                             .isOk()).andReturn();
             assertEquals(objectMapper.writeValueAsString(expectedUnits), result.getResponse().getContentAsString());
@@ -134,7 +134,7 @@ class AppControllerTest {
         try {
             when(converter.getValidUnitsOf(any(String.class)))
                     .thenThrow(new UnitConversionFailedException("Volume is not a proper unit", HttpStatus.BAD_REQUEST));
-            MvcResult result = mockMvc.perform(get("/quantity-measurements/Volume"))
+            MvcResult result = mockMvc.perform(get("/measurements/Volume"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
             assertEquals("Volume is not a proper unit", result.getResponse().getContentAsString());
