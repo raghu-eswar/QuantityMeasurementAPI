@@ -1,8 +1,10 @@
 package com.bridgelabz.quantitymeasurement.controller;
 
 import com.bridgelabz.quantitymeasurement.enumeration.UnitTypes;
+import com.bridgelabz.quantitymeasurement.enumeration.Units;
 import com.bridgelabz.quantitymeasurement.exceptions.UnitConversionFailedException;
 import com.bridgelabz.quantitymeasurement.model.Quantity;
+import com.bridgelabz.quantitymeasurement.response.Response;
 import com.bridgelabz.quantitymeasurement.scrvice.UnitConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,12 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import com.bridgelabz.quantitymeasurement.enumeration.Units;
 
 import static com.bridgelabz.quantitymeasurement.enumeration.UnitTypes.*;
 import static com.bridgelabz.quantitymeasurement.enumeration.Units.*;
@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +38,8 @@ class MeasurementControllerTest {
     @MockBean
     private UnitConverter converter;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -51,9 +54,8 @@ class MeasurementControllerTest {
                     .andExpect(status()
                             .isOk())
                     .andReturn();
-            Quantity quantity = objectMapper.readValue(result.getResponse().getContentAsString(), Quantity.class);
-            assertEquals(quantity.getValue(), 1);
-            assertEquals(quantity.getUnit(), CENTIMETER);
+            assertEquals(objectMapper.writeValueAsString(new Response(new Quantity(1, CENTIMETER), OK)),
+                            result.getResponse().getContentAsString());
             verify(converter).convert(any(Quantity.class), any());
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,9 +70,8 @@ class MeasurementControllerTest {
                     .andExpect(status()
                             .isOk())
                     .andReturn();
-            Quantity quantity = objectMapper.readValue(result.getResponse().getContentAsString(), Quantity.class);
-            assertEquals(quantity.getValue(), 1);
-            assertEquals(quantity.getUnit(), CENTIMETER);
+            assertEquals(objectMapper.writeValueAsString(new Response(new Quantity(1, CENTIMETER), OK)),
+                            result.getResponse().getContentAsString());
             verify(converter).convert(any(Quantity.class), any());
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +84,8 @@ class MeasurementControllerTest {
             MvcResult result = mockMvc.perform(get("/measurements/convert/MILLIMETER_/10/CENTIMETER"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
-            assertEquals("MILLIMETER_ is not a proper unit", result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response("MILLIMETER_ is not a proper unit", BAD_REQUEST)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,11 +95,12 @@ class MeasurementControllerTest {
     void givenInvalidUnitsAndValues_convertUnits_shouldReturnResponseAsBadRequest() {
         try {
             when(converter.convert(any(Quantity.class), any()))
-                .thenThrow(new UnitConversionFailedException("can not convert CELSIUS to CENTIMETER", HttpStatus.BAD_REQUEST));
+                .thenThrow(new UnitConversionFailedException("can not convert CELSIUS to CENTIMETER", BAD_REQUEST));
             MvcResult result = mockMvc.perform(get("/measurements/convert/CELSIUS/10/CENTIMETER"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
-            assertEquals("can not convert CELSIUS to CENTIMETER", result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response("can not convert CELSIUS to CENTIMETER", BAD_REQUEST)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +114,8 @@ class MeasurementControllerTest {
             MvcResult result = mockMvc.perform(get("/measurements/"))
                     .andExpect(status()
                             .isOk()).andReturn();
-            assertEquals(objectMapper.writeValueAsString(unitTypes), result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response(unitTypes, OK)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,7 +129,8 @@ class MeasurementControllerTest {
             MvcResult result = mockMvc.perform(get("/measurements/LENGTH"))
                     .andExpect(status()
                             .isOk()).andReturn();
-            assertEquals(objectMapper.writeValueAsString(expectedUnits), result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response(expectedUnits, OK)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,7 +144,8 @@ class MeasurementControllerTest {
             MvcResult result = mockMvc.perform(get("/measurements/length"))
                     .andExpect(status()
                             .isOk()).andReturn();
-            assertEquals(objectMapper.writeValueAsString(expectedUnits), result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response(expectedUnits, OK)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,11 +155,12 @@ class MeasurementControllerTest {
     void givenInvalidUnitType_getValidUnitsOf_shouldReturnResponseAsBadRequest() {
         try {
             when(converter.getValidUnitsOf(any(UnitTypes.class)))
-                    .thenThrow(new UnitConversionFailedException("Volume_ is not a proper unit", HttpStatus.BAD_REQUEST));
+                    .thenThrow(new UnitConversionFailedException("Volume_ is not a proper unit", BAD_REQUEST));
             MvcResult result = mockMvc.perform(get("/measurements/Volume_"))
                     .andExpect(status()
                             .isBadRequest()).andReturn();
-            assertEquals("Volume_ is not a proper unit", result.getResponse().getContentAsString());
+            assertEquals(objectMapper.writeValueAsString(new Response("Volume_ is not a proper unit", BAD_REQUEST)),
+                            result.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }

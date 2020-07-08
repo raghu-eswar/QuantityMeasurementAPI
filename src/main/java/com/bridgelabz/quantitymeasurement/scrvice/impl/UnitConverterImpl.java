@@ -18,7 +18,7 @@ public class UnitConverterImpl implements UnitConverter {
         if (!conversionUnit.type.equals(quantity.getUnit().type)) {
             throw new UnitConversionFailedException("can not convert " + quantity.getUnit() + " to " + conversionUnit, HttpStatus.BAD_REQUEST);
         }
-        double convertedValue = (quantity.getBaseValue() - conversionUnit.addend)/conversionUnit.multiplicand;
+        double convertedValue = (quantity.baseValue() - conversionUnit.addend)/conversionUnit.multiplicand;
         quantity.setValue(convertedValue);
         quantity.setUnit(conversionUnit);
         return quantity;
@@ -32,8 +32,8 @@ public class UnitConverterImpl implements UnitConverter {
     @Override
     public Units[] getValidUnitsOf(UnitTypes unitType) {
         Units[] validUnits = Arrays.stream(Units.values()).filter(units -> units.type.equals(unitType)).toArray(Units[]::new);
-//        if (validUnits.length == 0)
-//            throw new UnitConversionFailedException(unitType+" is not a proper unit", HttpStatus.BAD_REQUEST);
+        if (validUnits.length == 0)
+            throw new UnitConversionFailedException(unitType+" is not a proper unit", HttpStatus.BAD_REQUEST);
         return validUnits ;
     }
 

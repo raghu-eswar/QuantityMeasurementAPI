@@ -5,22 +5,10 @@ import com.bridgelabz.quantitymeasurement.enumeration.Units;
 public class Quantity {
     private double value;
     private Units unit;
-    private double baseValue;
-
-    public Quantity() {    }
 
     public Quantity(double value, Units unit) {
         this.value = value;
         this.unit = unit;
-        setBaseValue();
-    }
-
-    public double getBaseValue() {
-        return baseValue;
-    }
-
-    private void setBaseValue() {
-        this.baseValue = (this.unit.multiplicand * this.value) + this.unit.addend;
     }
 
     public double getValue() {
@@ -29,8 +17,6 @@ public class Quantity {
 
     public void setValue(double value) {
         this.value = value;
-        if (this.unit != null)
-            setBaseValue();
     }
 
     public Units getUnit() {
@@ -39,7 +25,6 @@ public class Quantity {
 
     public void setUnit(Units unit) {
         this.unit = unit;
-        setBaseValue();
     }
 
     @Override
@@ -47,7 +32,11 @@ public class Quantity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quantity that = (Quantity) o;
-        return Math.abs(that.baseValue - this.baseValue) <= Math.min(4, (Math.min(that.baseValue, this.baseValue) * 0.0001));
+        return Math.abs(that.baseValue() - this.baseValue()) <= Math.min(4, (Math.min(that.baseValue(), this.baseValue()) * 0.0001));
+    }
+
+    public double baseValue() {
+        return (this.unit.multiplicand * this.value) + this.unit.addend;
     }
 
 }

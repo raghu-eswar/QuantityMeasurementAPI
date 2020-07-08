@@ -25,7 +25,8 @@ public class SwaggerConfig {
                     .apis(RequestHandlerSelectors.basePackage("com.bridgelabz.quantitymeasurement.controller"))
                     .build()
                     .apiInfo(apiInfo())
-                    .consumes(Collections.singleton("application/json"));
+                    .consumes(Collections.singleton("application/json"))
+                    .produces(Collections.singleton("application/json"));
     }
 
     private ApiInfo apiInfo() {
