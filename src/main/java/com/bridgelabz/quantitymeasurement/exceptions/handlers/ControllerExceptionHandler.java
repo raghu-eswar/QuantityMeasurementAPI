@@ -21,4 +21,9 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(exception.httpStatus).body(new Response(exception.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Response> handleException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
 }
