@@ -37,7 +37,7 @@ class UnitConverterTest {
         try {
             unitConverter.convert(new Quantity(10, FEET), CELSIUS);
         } catch (UnitConversionFailedException e) {
-            assertEquals("can not convert FEET to CELSIUS", e.getMessage());
+            assertEquals("INVALID_UNIT_CONVERSION", e.getMessage());
         }
     }
 

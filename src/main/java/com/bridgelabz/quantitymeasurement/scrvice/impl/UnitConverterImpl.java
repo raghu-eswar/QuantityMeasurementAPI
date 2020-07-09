@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+import static com.bridgelabz.quantitymeasurement.enumeration.ExceptionMessages.INVALID_UNIT;
+import static com.bridgelabz.quantitymeasurement.enumeration.ExceptionMessages.INVALID_UNIT_CONVERSION;
+
 @Service
 public class UnitConverterImpl implements UnitConverter {
 
     @Override
     public Quantity convert(Quantity quantity, Units conversionUnit) {
         if (!conversionUnit.type.equals(quantity.getUnit().type)) {
-            throw new UnitConversionFailedException("can not convert " + quantity.getUnit() + " to " + conversionUnit, HttpStatus.BAD_REQUEST);
+            throw new UnitConversionFailedException(INVALID_UNIT_CONVERSION, HttpStatus.BAD_REQUEST);
         }
         double convertedValue = (quantity.baseValue() - conversionUnit.addend)/conversionUnit.multiplicand;
         quantity.setValue(convertedValue);
@@ -33,7 +36,7 @@ public class UnitConverterImpl implements UnitConverter {
     public Units[] getValidUnitsOf(UnitTypes unitType) {
         Units[] validUnits = Arrays.stream(Units.values()).filter(units -> units.type.equals(unitType)).toArray(Units[]::new);
         if (validUnits.length == 0)
-            throw new UnitConversionFailedException(unitType+" is not a proper unit", HttpStatus.BAD_REQUEST);
+            throw new UnitConversionFailedException(INVALID_UNIT, HttpStatus.BAD_REQUEST);
         return validUnits ;
     }
 

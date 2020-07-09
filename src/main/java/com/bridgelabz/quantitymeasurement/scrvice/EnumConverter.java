@@ -4,6 +4,8 @@ import com.bridgelabz.quantitymeasurement.exceptions.EnumConversionFailedExcepti
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
+import static com.bridgelabz.quantitymeasurement.enumeration.ExceptionMessages.INVALID_UNIT;
+
 public class EnumConverter implements ConverterFactory<String, Enum > {
 
    @Override
@@ -24,7 +26,7 @@ public class EnumConverter implements ConverterFactory<String, Enum > {
             try {
                 return (T) T.valueOf(this.enumType, source.toUpperCase());
             }catch (IllegalArgumentException e){
-                throw new EnumConversionFailedException(source+" is not a proper unit");
+                throw new EnumConversionFailedException(INVALID_UNIT);
             }
 		}
 	}
