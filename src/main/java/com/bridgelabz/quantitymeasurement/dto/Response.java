@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @ApiModel(description = "contains response from server",value = "Response")
 public class Response {
-    @ApiModelProperty(name = "value", value = "contains response value from api", example = "Quantity")
+    @ApiModelProperty(name = "value", value = "contains response value from server")
     private Object value;
     @ApiModelProperty(name = "status", value = "Represents response status")
     private HttpStatus status;

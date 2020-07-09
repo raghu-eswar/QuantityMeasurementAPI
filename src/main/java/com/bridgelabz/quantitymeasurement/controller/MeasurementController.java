@@ -38,7 +38,7 @@ public class MeasurementController {
     }
 
     @ApiOperation(value = "converts value to given unit ",
-                    notes = "both old and new unit should be same type /INCH/10/FEET - valid & /INCH/10/TEMPERATURE - invalid")
+                    notes = "both old and new unit should be same type example /INCH/10/FEET")
     @GetMapping("convert/{oldUnit}/{value}/{newUnit}")
     public ResponseEntity<Response> convertUnits(@ApiParam(name ="old unit", value = "unit to be converted", required = true)
                                                      @PathVariable("oldUnit") Units  oldUnit,
